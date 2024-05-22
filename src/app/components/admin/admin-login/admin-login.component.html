@@ -1,1 +1,17 @@
-<p>admin-login works!</p>
+<h1>Admin Log-in</h1>
+<form #adminLogIn="ngForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" [(ngModel)]="email" />
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      [(ngModel)]="password"
+    />
+  </div>
+  <button type="submit">Login</button>
+</form>
