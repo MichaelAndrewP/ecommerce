@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ecommerce-9955d": {
+      "hosting": {
+        "ecommerce": [
+          "ecommerce-9955d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ecommerce-9955d"
+  }
+}
