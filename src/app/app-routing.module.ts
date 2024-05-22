@@ -10,15 +10,29 @@ import { AdminLoginComponent } from './components/admin/admin-login/admin-login.
 import { CustomerDashboardComponent } from './components/customer/customer-dashboard/customer-dashboard.component';
 import { CustomerLoginComponent } from './components/customer/customer-login/customer-login.component';
 import { CustomerRegistrationComponent } from './components/customer/customer-registration/customer-registration.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
+// role guard
+import { RoleGuard } from './guards/roles/role.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'landing', component: LandingComponent },
-  { path: 'admin/dashboard', component: AdminDashboardComponent },
+  {
+    path: 'admin/dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'admin' },
+  },
   { path: 'admin/login', component: AdminLoginComponent },
-  { path: 'customer/dashboard', component: CustomerDashboardComponent },
+  {
+    path: 'customer/dashboard',
+    component: CustomerDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'customer' },
+  },
   { path: 'customer/login', component: CustomerLoginComponent },
   { path: 'customer/registration', component: CustomerRegistrationComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
 ];
 
 @NgModule({
