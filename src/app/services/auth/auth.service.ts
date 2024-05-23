@@ -15,7 +15,7 @@ import {
   doc,
   setDoc,
 } from '@angular/fire/firestore';
-import { from, switchMap } from 'rxjs';
+import { from, switchMap, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
@@ -82,6 +82,7 @@ export class AuthService {
     }
   }
 
+  // checks if there is a logged in user
   isLoggedIn() {
     const token = localStorage.getItem('idToken');
     if (!token) {
@@ -91,37 +92,41 @@ export class AuthService {
     }
   }
 
-  // returns user object from firestore and login response value
-  async getUserLogInResponse(
-    res: object,
-    collectionName: string
-  ): Promise<object> {
-    try {
-      const uid = (res as any).user.uid;
-      // Created a document reference given the collection name and document id.
-      // NOTE: that our way to determine a user in firestore is using
-      //      its uid retrieve from firebase auth.
-      const docRef = doc(this.fireStore, collectionName, uid);
-      // Retrieves the document data.
-      const docData = await getDoc(docRef);
-      // Checks if docData returns 'undefined'.
-      // We can use this as a temporary solution for when a customer logs in.
-      // NOTE: the customer will have its own collection.
-      // Here we are focused on the 'admin' collection, therefore if the uid is not
-      // found in the documents
-      // ,docData will return undefined thus returning an empty object
-      if (!docData.exists()) {
-        console.log('No such document!');
-        return {};
-      }
-      const userObject = docData.data();
-      const userEmail = userObject['email'];
-      const isAdmin = userObject['isAdmin'];
-      return { res, userEmail, isAdmin };
-    } catch (error) {
-      console.error('Error retrieving login response:', error);
-      return {};
-    }
+  // This function retrieves the login response for a user.
+  getUserLogInResponse(
+    res: object, // The response object from the login request.
+    collectionName: string // The name of the Firestore collection where user data is stored.
+  ): Observable<object> {
+    // The function returns an Observable that emits the login response.
+    // The from function is used to convert the Promise returned by the async function into an Observable.
+    return from(
+      (async () => {
+        try {
+          // Extract the user's UID from the response object.
+          const uid = (res as any).user.uid;
+          // Create a reference to the document in Firestore that corresponds to the user.
+          const docRef = doc(this.fireStore, collectionName, uid);
+          // Retrieve the document data.
+          const docData = await getDoc(docRef);
+          // If the document doesn't exist, log an error and return an empty object.
+          if (!docData.exists()) {
+            console.log('No such document!');
+            return {};
+          }
+          // Extract the user data from the document.
+          const userObject = docData.data();
+          // Extract the user's email and admin status from the user data.
+          const userEmail = userObject['email'];
+          const isAdmin = userObject['isAdmin'];
+          // Return the login response, which includes the original response object, the user's email, and the user's admin status.
+          return { res, userEmail, isAdmin };
+        } catch (error) {
+          // If an error occurs, log it and return an empty object.
+          console.error('Error retrieving login response:', error);
+          return {};
+        }
+      })()
+    );
   }
 
   // from() converts the returned Promise by
@@ -138,19 +143,6 @@ export class AuthService {
 
   public decodeToken(token: string): any {
     return this.jwtHelper.decodeToken(token);
-  }
-
-  // sign out
-  logout(role: string) {
-    this.fireAuth.signOut().then(
-      () => {
-        localStorage.clear();
-        this.router.navigate([role + '/login']);
-      },
-      (err) => {
-        alert(err.message);
-      }
-    );
   }
 
   async checkIfDocumentExists(collection: string, docId: string) {
@@ -223,5 +215,18 @@ export class AuthService {
       .catch((err) => {
         alert(err.message);
       });
+  }
+
+  // sign out
+  logout(role: string) {
+    this.fireAuth.signOut().then(
+      () => {
+        localStorage.clear();
+        this.router.navigate([role + '/login']);
+      },
+      (err) => {
+        alert(err.message);
+      }
+    );
   }
 }
