@@ -215,7 +215,6 @@ export class AuthService {
             isAdmin: false,
           });
         }
-        console.log('resposod', res);
         const tokenId = res.user?.getIdToken();
         localStorage.setItem('idToken', await tokenId);
         localStorage.setItem('userEmail', res.user.email ?? '');

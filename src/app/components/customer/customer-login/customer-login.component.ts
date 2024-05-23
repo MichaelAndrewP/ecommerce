@@ -59,8 +59,7 @@ export class CustomerLoginComponent {
 
   signInWithGoogle() {
     from(this.authService.googleSignIn()).subscribe({
-      next: (res) => {
-        console.log('ResponseOb', res);
+      next: () => {
         this.router.navigate(['customer/dashboard']);
       },
     });
