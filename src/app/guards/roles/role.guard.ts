@@ -7,13 +7,14 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService, UserRoles } from 'src/app/services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
+
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -22,26 +23,36 @@ export class RoleGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    let userRole = '';
     const expectedRole = next.data['role'];
-    const token = localStorage.getItem('idToken');
+    const navigateLoginRoute = expectedRole + '/login';
+    const navigateDashboardRoute = expectedRole + '/dashboard';
 
-    const isAdmin = localStorage.getItem('isAdmin');
-    if (isAdmin === 'true') {
-      userRole = 'admin';
-    } else {
-      userRole = 'customer';
-    }
-    const userEmail = localStorage.getItem('userEmail');
-    const navigateRout = expectedRole + '/login';
-    if (!token || !userEmail) {
-      this.router.navigate([navigateRout]);
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate([navigateLoginRoute]);
       return false;
     }
 
-    const tokenPayload = this.authService.decodeToken(token);
-    if (expectedRole === userRole && tokenPayload.email === userEmail) {
-      return true;
+    try {
+      const userRole = this.authService.getUserRole();
+      const userEmail = this.authService.getUserEmail() ?? '';
+
+      if (
+        expectedRole === userRole &&
+        this.authService.isEmailValid(userEmail)
+      ) {
+        return true;
+      }
+
+      if (
+        this.authService.isLoggedIn() &&
+        expectedRole === userRole &&
+        this.authService.isEmailValid(userEmail)
+      ) {
+        this.router.navigate([navigateDashboardRoute]);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error decoding token', error);
     }
 
     this.router.navigate(['unauthorized']);

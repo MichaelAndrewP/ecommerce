@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService, UserRoles } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +30,7 @@ export class CustomerLoginComponent {
     // (ergo, we can subscribe to it)
     // then it starts emitting values
     this.subscription = this.authService
-      .userLogin(this.email, this.password, 'customer')
+      .userLogin(this.email, this.password, UserRoles.customer)
       .subscribe({
         next: (value: any) => {
           const isAdmin = value['isAdmin'];

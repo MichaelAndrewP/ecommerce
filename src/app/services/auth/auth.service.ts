@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from '@angular/fire/auth';
 import { Firestore, doc, collection, getDoc } from '@angular/fire/firestore';
 import { from, switchMap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+
+export const UserRoles = {
+  admin: 'admin',
+  customer: 'customer',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +22,58 @@ export class AuthService {
   constructor(
     private fireStore: Firestore,
     private fireAuth: Auth,
+    private router: Router,
     public jwtHelper: JwtHelperService
   ) {}
+
+  getUserRole() {
+    try {
+      let userRole = '';
+      const isAdmin = localStorage.getItem('isAdmin');
+      if (isAdmin === 'true') {
+        userRole = UserRoles.admin;
+      } else {
+        userRole = UserRoles.customer;
+      }
+      return userRole;
+    } catch (error) {
+      console.log('Error getting user role');
+      return;
+    }
+  }
+
+  getUserEmail() {
+    try {
+      return localStorage.getItem('userEmail');
+    } catch (error) {
+      console.log('Error getting using email');
+      return;
+    }
+  }
+
+  isEmailValid(userEmail: string) {
+    try {
+      const token = localStorage.getItem('idToken');
+
+      const tokenPayload = token ? this.decodeToken(token) : null;
+      if (userEmail === tokenPayload.email) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log('Error validating email');
+      return false;
+    }
+  }
+
+  isLoggedIn() {
+    const token = localStorage.getItem('idToken');
+    if (!token) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   // returns user object from firestore and login response value
   async getUserLogInResponse(
@@ -61,5 +122,29 @@ export class AuthService {
 
   public decodeToken(token: string): any {
     return this.jwtHelper.decodeToken(token);
+  }
+
+  // sign out
+  logout(role: string) {
+    this.fireAuth.signOut().then(
+      () => {
+        localStorage.clear();
+        this.router.navigate([role + '/login']);
+      },
+      (err) => {
+        alert(err.message);
+      }
+    );
+  }
+
+  googleSignIn() {
+    return signInWithPopup(this.fireAuth, new GoogleAuthProvider())
+      .then((res) => {
+        this.router.navigate(['customer/dashboard']);
+        localStorage.setItem('token', JSON.stringify(res.user?.uid));
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
   }
 }

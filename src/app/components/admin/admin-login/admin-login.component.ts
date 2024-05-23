@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService, UserRoles } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +30,7 @@ export class AdminLoginComponent {
     // Subscribe to the userLogin function from AuthService
     // This function is expected to return an Observable
     this.subscription = this.authService
-      .userLogin(this.email, this.password, 'admin')
+      .userLogin(this.email, this.password, UserRoles.admin)
       .subscribe({
         next: (value: any) => {
           // Check if the user is an admin and if the returned value is not empty

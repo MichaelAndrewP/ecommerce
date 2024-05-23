@@ -23,14 +23,24 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'admin' },
   },
-  { path: 'admin/login', component: AdminLoginComponent },
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent,
+    /* canActivate: [RoleGuard],
+    data: { role: 'admin' }, */
+  },
   {
     path: 'customer/dashboard',
     component: CustomerDashboardComponent,
     canActivate: [RoleGuard],
     data: { role: 'customer' },
   },
-  { path: 'customer/login', component: CustomerLoginComponent },
+  {
+    path: 'customer/login',
+    component: CustomerLoginComponent,
+    /*   canActivate: [RoleGuard],
+    data: { role: 'customer' }, */
+  },
   { path: 'customer/registration', component: CustomerRegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
 ];
