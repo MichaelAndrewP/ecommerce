@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService, UserRoles } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, from } from 'rxjs';
 
 @Component({
   selector: 'app-customer-login',
@@ -55,6 +55,15 @@ export class CustomerLoginComponent {
 
     this.email = '';
     this.password = '';
+  }
+
+  signInWithGoogle() {
+    from(this.authService.googleSignIn()).subscribe({
+      next: (res) => {
+        console.log('ResponseOb', res);
+        this.router.navigate(['customer/dashboard']);
+      },
+    });
   }
 
   // To ensure that the subscription is cleaned up when the component is destroyed.

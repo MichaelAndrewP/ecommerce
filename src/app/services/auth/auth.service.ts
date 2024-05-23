@@ -153,6 +153,27 @@ export class AuthService {
     );
   }
 
+  async checkIfDocumentExists(collection: string, docId: string) {
+    try {
+      const docRef = doc(this.fireStore, collection, docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log(
+          `Document with ID ${docId} exists in collection ${collection}`
+        );
+        return true;
+      } else {
+        console.log(
+          `Document with ID ${docId} does not exist in collection ${collection}`
+        );
+        return false;
+      }
+    } catch (error) {
+      console.log('Error checking if document exists');
+      return false;
+    }
+  }
+
   async addCustomerDocument(uid: string, customerObject: object) {
     try {
       await setDoc(doc(this.fireStore, 'customer', uid), customerObject);
@@ -182,9 +203,23 @@ export class AuthService {
 
   async googleSignIn() {
     return signInWithPopup(this.fireAuth, new GoogleAuthProvider())
-      .then((res) => {
-        this.router.navigate(['customer/dashboard']);
-        localStorage.setItem('token', JSON.stringify(res.user?.uid));
+      .then(async (res) => {
+        console.log('response google');
+        const ifDocExists = await this.checkIfDocumentExists(
+          res.user.uid,
+          'customer'
+        );
+        if (!ifDocExists) {
+          this.addCustomerDocument(res.user.uid, {
+            email: res.user.email ?? '',
+            isAdmin: false,
+          });
+        }
+        console.log('resposod', res);
+        const tokenId = res.user?.getIdToken();
+        localStorage.setItem('idToken', await tokenId);
+        localStorage.setItem('userEmail', res.user.email ?? '');
+        localStorage.setItem('isAdmin', 'false');
       })
       .catch((err) => {
         alert(err.message);

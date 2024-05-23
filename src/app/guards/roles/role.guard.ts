@@ -36,6 +36,7 @@ export class RoleGuard implements CanActivate {
       const userRole = this.authService.getUserRole();
       const userEmail = this.authService.getUserEmail() ?? '';
 
+      console.log('checking user email', userEmail);
       if (
         expectedRole === userRole &&
         this.authService.isEmailValid(userEmail)
