@@ -43,6 +43,7 @@ const routes: Routes = [
   },
   { path: 'customer/registration', component: CustomerRegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '**', redirectTo: 'landing' },
 ];
 
 @NgModule({
