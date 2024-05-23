@@ -1,5 +1,5 @@
 <h1>Customer Log-in</h1>
-<form #adminLogIn="ngForm" (ngSubmit)="onSubmit()">
+<form #customerLogIn="ngForm" (ngSubmit)="onSubmit()">
   <div>
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" [(ngModel)]="email" />
@@ -14,4 +14,6 @@
     />
   </div>
   <button type="submit">Login</button>
+  <span> or </span>
+  <a routerLink="/customer/registration">Don't have an account?</a>
 </form>

@@ -4,8 +4,17 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
 } from '@angular/fire/auth';
-import { Firestore, doc, collection, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  getDoc,
+  collection,
+  addDoc,
+  collectionData,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { from, switchMap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
@@ -19,12 +28,17 @@ export const UserRoles = {
   providedIn: 'root',
 })
 export class AuthService {
+  email: string = '';
+  password: string = '';
+
   constructor(
     private fireStore: Firestore,
     private fireAuth: Auth,
     private router: Router,
     public jwtHelper: JwtHelperService
   ) {}
+
+  customerCollectionInstance = collection(this.fireStore, 'customer');
 
   getUserRole() {
     try {
@@ -51,6 +65,8 @@ export class AuthService {
     }
   }
 
+  // this checks if userEmail inside the localStorage is
+  // equal to the email decoded from the idToken
   isEmailValid(userEmail: string) {
     try {
       const token = localStorage.getItem('idToken');
@@ -137,7 +153,34 @@ export class AuthService {
     );
   }
 
-  googleSignIn() {
+  async addCustomerDocument(uid: string, customerObject: object) {
+    try {
+      await setDoc(doc(this.fireStore, 'customer', uid), customerObject);
+      console.log('Successfully added user to firestore');
+    } catch (error) {
+      console.log('Error adding customer document', error);
+    }
+  }
+
+  emailAndPasswordRegistration(email: string, password: string) {
+    createUserWithEmailAndPassword(this.fireAuth, email, password)
+      .then((res) => {
+        this.addCustomerDocument(res.user.uid, {
+          email: email,
+          isAdmin: false,
+        });
+        console.log('Resgistration response', res);
+        this.router.navigate(['customer/dashboard']);
+        alert('Registration Successful');
+      })
+      .catch((err) => {
+        alert('Register failed: ' + err.message);
+        console.log('error register', err);
+        this.router.navigate(['/register']);
+      });
+  }
+
+  async googleSignIn() {
     return signInWithPopup(this.fireAuth, new GoogleAuthProvider())
       .then((res) => {
         this.router.navigate(['customer/dashboard']);

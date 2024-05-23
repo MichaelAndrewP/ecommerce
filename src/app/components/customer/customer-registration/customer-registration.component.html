@@ -1,1 +1,19 @@
-<p>customer-registration works!</p>
+<h1>Customer Registration</h1>
+<form #customerRegistrationForm="ngForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" [(ngModel)]="email" />
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      [(ngModel)]="password"
+    />
+  </div>
+  <button type="submit">Register</button>
+  <span> or </span>
+  <a routerLink="/customer/login">Already have an account?</a>
+</form>
