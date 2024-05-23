@@ -65,6 +65,12 @@ export class CustomerLoginComponent {
     });
   }
 
+  ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['admin/dashboard']);
+    }
+  }
+
   // To ensure that the subscription is cleaned up when the component is destroyed.
   // Preventing memory leaks
   ngOnDestroy() {

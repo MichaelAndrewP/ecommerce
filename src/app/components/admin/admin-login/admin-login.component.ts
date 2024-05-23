@@ -62,6 +62,12 @@ export class AdminLoginComponent {
     this.password = '';
   }
 
+  ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['admin/dashboard']);
+    }
+  }
+
   // Unsubscribe from the AuthService observable when the component is destroyed to prevent memory leaks
   ngOnDestroy() {
     if (this.subscription) {
