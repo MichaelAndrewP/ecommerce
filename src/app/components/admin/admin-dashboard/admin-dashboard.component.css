@@ -1,0 +1,41 @@
+.product {
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 400px;
+  overflow: auto;
+
+  /* Style the scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+}
+
+.product::-webkit-scrollbar {
+  width: 8px;
+}
+
+.product::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.7);
+  border-radius: 4px;
+}
+
+mat-card-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: white;
+}
+
+mat-card-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: white;
+}
+
+mat-card-content,
+mat-card-actions {
+  opacity: 0.7;
+  border-radius: 10px;
+}

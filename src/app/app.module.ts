@@ -21,7 +21,15 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { ToastrModule } from 'ngx-toastr';
 import { provideToastr } from 'ngx-toastr';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+  provideAnimations,
+  BrowserAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { CreateProductComponent } from './components/admin/admin-create-product/create-product/create-product.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +41,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     CustomerDashboardComponent,
     CustomerRegistrationComponent,
     UnauthorizedComponent,
+    CreateProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +58,11 @@ import { provideAnimations } from '@angular/platform-browser/animations';
       },
     }),
     ToastrModule.forRoot(),
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatCardModule,
+    MatGridListModule,
   ],
   providers: [
     provideAnimations(), // required animations providers

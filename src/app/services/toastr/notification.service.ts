@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NotificationService {
   constructor(private toastr: ToastrService) {}
+
   showSuccess(topMsg: string, botMsg: string) {
     this.toastr.success(botMsg, topMsg, {
       timeOut: 3000,

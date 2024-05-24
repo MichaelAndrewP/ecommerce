@@ -1,2 +1,93 @@
 <h1>ADMIN DASHBOARD</h1>
+<hr />
+<h3>Your Inventory</h3>
+<br />
+<mat-grid-list cols="4">
+  <mat-grid-tile *ngFor="let product of products | async">
+    <mat-card class="product">
+      <mat-card-header>
+        <mat-card-title>{{ product["name"] }}</mat-card-title>
+        <mat-card-subtitle
+          >Price: {{ product["price"] }}
+          {{ product["currency"] }}</mat-card-subtitle
+        >
+        <mat-card-subtitle
+          >In stock: {{ product["quantity"] }}</mat-card-subtitle
+        >
+      </mat-card-header>
+
+      <img
+        mat-card-image
+        [src]="product['image']"
+        alt="{{ product['name'] }}"
+      />
+      <mat-card-content>
+        <p>
+          {{ product["description"] }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>Update Price</button>
+        <button mat-button>Edit Quantity</button>
+        <button mat-button>Remove Item</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+<hr />
+
+<div>
+  <button (click)="openDialog()">List new item</button>
+
+  <button (click)="closeDialog()">Close Dialogue</button>
+  <button>Edit an item</button>
+  <button>Remove an item</button>
+</div>
+<hr />
 <button type="button" (click)="logout()">Log out</button>
+
+<!-- <mat-card class="product">
+  <mat-card-header>
+    <mat-card-title>Shiba Inu</mat-card-title>
+    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+  </mat-card-header>
+  <img
+    mat-card-image
+    src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+  />
+  <mat-card-content>
+    <p>
+      The Shiba Inu is the smallest of the six original and distinct spitz
+      breeds of dog from Japan. A small, agile dog that copes very well with
+      mountainous terrain, the Shiba Inu was originally bred for hunting.
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Update Price</button>
+    <button mat-button>Edit Quantity</button>
+    <button mat-button>Remove Item</button>
+  </mat-card-actions>
+</mat-card> -->
+
+<!-- <div
+  *ngFor="let product of products | async"
+  style="border: 1px solid black; padding: 10px; margin-bottom: 10px"
+>
+  <img
+    [src]="product['image']"
+    alt="{{ product['name'] }}"
+    style="width: 100px; height: 100px"
+  />
+  <h2>{{ product["name"] }}</h2>
+  <h3>{{ product["description"] }}</h3>
+  <div style="display: flex">
+    <button>Change</button>
+
+    <h3>{{ product["price"] }} {{ product["currency"] }}</h3>
+  </div>
+  <div style="display: flex">
+    <button>+</button>
+    <button>-</button>
+    <h3>{{ product["quantity"] }} pcs in stock</h3>
+  </div>
+</div> -->
