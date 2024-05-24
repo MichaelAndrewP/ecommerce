@@ -26,11 +26,16 @@
           {{ product["description"] }}
         </p>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>Update Price</button>
-        <button mat-button>Edit Quantity</button>
-        <button mat-button>Remove Item</button>
-      </mat-card-actions>
+
+      <mat-card-actions
+        ><mat-grid-list cols="3">
+          <button mat-button>Rename Item</button>
+          <button mat-button>Update Price</button>
+          <button mat-button>Edit Quantity</button>
+          <button mat-button>Change Photo</button>
+          <button mat-button>Remove Item</button>
+        </mat-grid-list></mat-card-actions
+      >
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>

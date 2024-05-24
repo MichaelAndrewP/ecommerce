@@ -22,7 +22,11 @@ export class AdminDashboardComponent implements OnDestroy {
 
   openDialog() {
     if (!this.dialog.openDialogs.length) {
-      this.dialogRef = this.dialog.open(CreateProductComponent);
+      this.dialogRef = this.dialog.open(CreateProductComponent, {
+        data: {
+          close: this.closeDialog.bind(this),
+        },
+      });
     }
   }
 
