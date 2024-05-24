@@ -18,6 +18,7 @@ import {
 import { from, switchMap, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 export const UserRoles = {
   admin: 'admin',
@@ -35,7 +36,8 @@ export class AuthService {
     private fireStore: Firestore,
     private fireAuth: Auth,
     private router: Router,
-    public jwtHelper: JwtHelperService
+    public jwtHelper: JwtHelperService,
+    private toastr: ToastrService
   ) {}
 
   customerCollectionInstance = collection(this.fireStore, 'customer');
@@ -63,6 +65,13 @@ export class AuthService {
       console.log('Error getting using email');
       return;
     }
+  }
+
+  showSuccess(topMsg: string, botMsg: string) {
+    this.toastr.success(botMsg, topMsg, {
+      timeOut: 3000,
+      tapToDismiss: true,
+    });
   }
 
   // this checks if userEmail inside the localStorage is

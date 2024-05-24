@@ -19,6 +19,10 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized/un
 
 import { JwtModule } from '@auth0/angular-jwt';
 
+import { ToastrModule } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,8 +48,12 @@ import { JwtModule } from '@auth0/angular-jwt';
         },
       },
     }),
+    ToastrModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    provideAnimations(), // required animations providers
+    provideToastr(), // Toastr providers
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

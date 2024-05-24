@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService, UserRoles } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { NotificationService } from 'src/app/services/toastr/notification.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -13,7 +14,11 @@ export class AdminLoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: NotificationService
+  ) {}
 
   onSubmit() {
     // Check if email and password fields are not empty
@@ -46,6 +51,7 @@ export class AdminLoginComponent {
             localStorage.setItem('idToken', tokenResponse['idToken']);
             localStorage.setItem('userEmail', userEmail);
             localStorage.setItem('isAdmin', isAdmin);
+            this.toastr.showSuccess('Success!', 'Log-in Successfull!');
             // Navigate to the admin dashboard
             this.router.navigate(['admin/dashboard']);
           }
