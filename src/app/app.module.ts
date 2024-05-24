@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CreateProductComponent } from './components/admin/create-product/create-product.component';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,6 +63,7 @@ import { CreateProductComponent } from './components/admin/create-product/create
     MatDialogModule,
     MatCardModule,
     MatGridListModule,
+    provideStorage(() => getStorage()),
   ],
   providers: [
     provideAnimations(), // required animations providers

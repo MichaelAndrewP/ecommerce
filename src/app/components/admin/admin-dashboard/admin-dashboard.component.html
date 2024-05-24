@@ -33,7 +33,12 @@
           <button mat-button>Update Price</button>
           <button mat-button>Edit Quantity</button>
           <button mat-button>Change Photo</button>
-          <button mat-button>Remove Item</button>
+          <button
+            mat-button
+            (click)="deleteProduct(product['id'], product['image'])"
+          >
+            Remove Item
+          </button>
         </mat-grid-list></mat-card-actions
       >
     </mat-card>
@@ -43,10 +48,6 @@
 
 <div>
   <button (click)="openDialog()">List new item</button>
-
-  <button (click)="closeDialog()">Close Dialogue</button>
-  <button>Edit an item</button>
-  <button>Remove an item</button>
 </div>
 <hr />
 <button type="button" (click)="logout()">Log out</button>

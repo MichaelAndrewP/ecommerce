@@ -67,13 +67,7 @@ export class AuthService {
     }
   }
 
-  showSuccess(topMsg: string, botMsg: string) {
-    this.toastr.success(botMsg, topMsg, {
-      timeOut: 3000,
-      tapToDismiss: true,
-    });
-  }
-
+ 
   // this checks if userEmail inside the localStorage is
   // equal to the email decoded from the idToken
   isEmailValid(userEmail: string) {

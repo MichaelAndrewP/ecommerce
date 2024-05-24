@@ -1,1 +1,51 @@
-<p>create-product works!</p>
+<h2>Adding new Item</h2>
+<form #productForm="ngForm" stye="padding-left: 2rem" (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label><br />
+  <input type="text" id="name" name="name" [(ngModel)]="name" /><br />
+
+  <label for="price">Price:</label><br />
+  <input type="number" id="price" name="price" [(ngModel)]="price" /><br />
+
+  <label for="quantity">Quantity:</label><br />
+  <input
+    type="number"
+    id="quantity"
+    name="quantity"
+    [(ngModel)]="quantity"
+  /><br />
+
+  <label for="image">Image:</label><br />
+  <input
+    type="file"
+    id="image"
+    name="image"
+    accept="image/*"
+    (change)="uploadFile($event)"
+  /><br />
+  <img
+    *ngIf="imageUrl"
+    mat-card-image
+    [src]="imageUrl"
+    alt="uploaded-image"
+    style="max-width: 20rem"
+  />
+  <br />
+  <label for="description">Description:</label><br />
+  <input
+    type="text"
+    id="description"
+    name="description"
+    [(ngModel)]="description"
+  /><br />
+  <!-- TODO: MAKE THIS CURRENCY FIELD INTO A DROPDOWN -->
+  <label for="currency">Currency:</label><br />
+  <input
+    type="text"
+    id="currency"
+    name="currency"
+    [(ngModel)]="currency"
+  /><br />
+
+  <button type="submit">Submit</button>
+</form>
+<button (click)="close()">Cancel</button>
