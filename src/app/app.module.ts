@@ -29,8 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { CreateProductComponent } from './components/admin/admin-create-product/create-product/create-product.component';
-
+import { CreateProductComponent } from './components/admin/create-product/create-product.component';
 @NgModule({
   declarations: [
     AppComponent,

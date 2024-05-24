@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AdminService } from 'src/app/services/admin/admin.service';
-import { CreateProductComponent } from '../admin-create-product/create-product/create-product.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { CreateProductComponent } from '../create-product/create-product.component';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
