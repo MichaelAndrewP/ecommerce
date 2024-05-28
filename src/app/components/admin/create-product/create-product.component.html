@@ -1,51 +1,95 @@
-<h2>Adding new Item</h2>
-<form #productForm="ngForm" stye="padding-left: 2rem" (ngSubmit)="onSubmit()">
-  <label for="name">Name:</label><br />
-  <input type="text" id="name" name="name" [(ngModel)]="name" /><br />
+<div class="p-14">
+  <div class="flex items-center justify-center">
+    <h2 class="text-2xl font-bold mb-5">Adding new Item</h2>
+  </div>
+  <form #productForm="ngForm" (ngSubmit)="onSubmit()">
+    <label for="name" class="block text-gray-700 text-sm font-bold mb-2"
+      >Name:</label
+    >
+    <input
+      type="text"
+      id="name"
+      name="name"
+      [(ngModel)]="name"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
 
-  <label for="price">Price:</label><br />
-  <input type="number" id="price" name="price" [(ngModel)]="price" /><br />
+    <label for="price" class="block text-gray-700 text-sm font-bold mb-2"
+      >Price:</label
+    >
+    <input
+      type="number"
+      id="price"
+      name="price"
+      [(ngModel)]="price"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
 
-  <label for="quantity">Quantity:</label><br />
-  <input
-    type="number"
-    id="quantity"
-    name="quantity"
-    [(ngModel)]="quantity"
-  /><br />
+    <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2"
+      >Quantity:</label
+    >
+    <input
+      type="number"
+      id="quantity"
+      name="quantity"
+      [(ngModel)]="quantity"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
 
-  <label for="image">Image:</label><br />
-  <input
-    type="file"
-    id="image"
-    name="image"
-    accept="image/*"
-    (change)="uploadFile($event)"
-  /><br />
-  <img
-    *ngIf="imageUrl"
-    mat-card-image
-    [src]="imageUrl"
-    alt="uploaded-image"
-    style="max-width: 20rem"
-  />
-  <br />
-  <label for="description">Description:</label><br />
-  <input
-    type="text"
-    id="description"
-    name="description"
-    [(ngModel)]="description"
-  /><br />
-  <!-- TODO: MAKE THIS CURRENCY FIELD INTO A DROPDOWN -->
-  <label for="currency">Currency:</label><br />
-  <input
-    type="text"
-    id="currency"
-    name="currency"
-    [(ngModel)]="currency"
-  /><br />
+    <label for="image" class="block text-gray-700 text-sm font-bold mb-2"
+      >Image:</label
+    >
+    <input
+      type="file"
+      id="image"
+      name="image"
+      accept="image/*"
+      (change)="uploadFile($event)"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
+    <img
+      *ngIf="imageUrl"
+      mat-card-image
+      [src]="imageUrl"
+      alt="uploaded-image"
+      class="max-h-40"
+    />
 
-  <button type="submit">Submit</button>
-</form>
-<button (click)="close()">Cancel</button>
+    <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
+      >Description:</label
+    >
+    <input
+      type="text"
+      id="description"
+      name="description"
+      [(ngModel)]="description"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
+
+    <label for="currency" class="block text-gray-700 text-sm font-bold mb-2"
+      >Currency:</label
+    >
+    <input
+      type="text"
+      id="currency"
+      name="currency"
+      [(ngModel)]="currency"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+    />
+    <div class="flex items-center justify-center">
+      <button
+        type="submit"
+        class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-4 rounded"
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        (click)="close()"
+        class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-4 rounded"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

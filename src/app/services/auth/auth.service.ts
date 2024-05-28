@@ -42,6 +42,13 @@ export class AuthService {
 
   customerCollectionInstance = collection(this.fireStore, 'customer');
 
+  getUserId() {
+    const tokenId = localStorage.getItem('idToken');
+    const tokenPayload = tokenId ? this.decodeToken(tokenId) : null;
+    console.log('tokenPayload', tokenPayload);
+    return tokenPayload ? tokenPayload.user_id : null;
+  }
+
   getUserRole() {
     try {
       let userRole = '';
@@ -67,7 +74,6 @@ export class AuthService {
     }
   }
 
- 
   // this checks if userEmail inside the localStorage is
   // equal to the email decoded from the idToken
   isEmailValid(userEmail: string) {

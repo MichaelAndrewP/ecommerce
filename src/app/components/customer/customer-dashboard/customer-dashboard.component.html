@@ -1,2 +1,58 @@
-<h1>CUSTOMER DASHBOARD</h1>
-<button type="button" (click)="logout()">Log out</button>
+<div>
+  <h1>CUSTOMER DASHBOARD</h1>
+  <hr />
+  <h3 class="text-2xl text-red-500">Items for sale</h3>
+  <br />
+  <mat-grid-list class="bg-white" cols="4" rowHeight="40rem">
+    <mat-grid-tile class="bg-white" *ngFor="let product of products | async">
+      <mat-card class="product bg-white">
+        <mat-card-header>
+          <mat-card-title>{{ product["name"] }}</mat-card-title>
+          <mat-card-subtitle
+            >Price: {{ product["price"] }}
+            {{ product["currency"] }}</mat-card-subtitle
+          >
+
+          <mat-card-subtitle
+            >Available: {{ product["quantity"] }} pcs</mat-card-subtitle
+          >
+        </mat-card-header>
+
+        <img
+          mat-card-image
+          class="bg-white px-3"
+          [src]="product['image']"
+          alt="{{ product['name'] }}"
+        />
+        <mat-card-content class="bg-white">
+          <p class="bg-white pb-5">
+            {{ product["description"] }}
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions
+          class="bg-white sticky bottom-0 pt-2 pb-7 mr-[-10px] ml-[-10px] w-auto"
+        >
+          <mat-grid-list class="z-30 w-full" cols="3">
+            <button
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+              (click)="addToCart(product)"
+            >
+              Add to cart
+            </button>
+          </mat-grid-list></mat-card-actions
+        >
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <hr />
+  <div>
+    <h3 class="text-2xl text-red-500">Cart Quantity: {{ cartQuantity }}</h3>
+  </div>
+  <hr />
+  <div>
+    <button>Checkout</button>
+  </div>
+  <hr />
+  <button type="button" (click)="logout()">Log out</button>
+</div>

@@ -17,6 +17,7 @@ import {
   deleteDoc,
 } from '@angular/fire/firestore';
 import { finalize, from } from 'rxjs';
+import { AdminService } from 'src/app/services/admin/admin.service';
 import { NotificationService } from 'src/app/services/toastr/notification.service';
 
 @Component({
@@ -37,7 +38,8 @@ export class CreateProductComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private storage: Storage,
     private fireStore: Firestore,
-    private toastr: NotificationService
+    private toastr: NotificationService,
+    private adminService: AdminService
   ) {}
 
   close() {
@@ -48,7 +50,7 @@ export class CreateProductComponent {
     } */
   }
 
-  uploadFile(event: Event) {
+  /*   uploadFile(event: Event) {
     const target = event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
     const filePath = `products/${new Date().getTime()}_${file.name}`;
@@ -66,34 +68,17 @@ export class CreateProductComponent {
         })
       )
       .subscribe();
-  }
+  } */
 
+  uploadFile(event: Event) {
+    this.adminService.uploadImageFile(event).subscribe((url: string) => {
+      this.imageUrl = url;
+    });
+  }
+  /* 
   deleteFile(filePath: string) {
-    const fileRef = ref(this.storage, filePath);
-    deleteObject(fileRef)
-      .then(() => {
-        console.log('File deleted successfully');
-      })
-      .catch((error) => {
-        console.log('Error in file deletion:', error);
-      });
-  }
-
-  deleteProduct(id: string, imgUrl: string) {
-    const docInstance = doc(this.fireStore, 'products', id);
-    deleteDoc(docInstance)
-      .then(() => {
-        const refPath = ref(this.storage, imgUrl);
-        deleteObject(refPath);
-        this.toastr.showSuccess('Success!', 'Product removed successfully!');
-      })
-      .catch(() => {
-        this.toastr.showError(
-          'Error removing the Product!',
-          'Please try again later!'
-        );
-      });
-  }
+    return this.adminService.deleteProductFromStorage(filePath);
+  } */
 
   onSubmit() {
     addDoc(collection(this.fireStore, 'products'), {

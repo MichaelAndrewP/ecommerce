@@ -1,0 +1,104 @@
+<div class="p-14 bg-white">
+  <div class="flex items-center justify-center">
+    <h2 class="text-2xl font-bold mb-5">Updating Item: "{{ name }}"</h2>
+  </div>
+  <form #productForm="ngForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="name && toEdit === 'name'">
+      <label for="name" class="block text-gray-700 text-sm font-bold mb-2"
+        >Enter new Name:</label
+      >
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="name"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+    </div>
+    <div *ngIf="price">
+      <label for="price" class="block text-gray-700 text-sm font-bold mb-2"
+        >Enter new Price:</label
+      >
+      <input
+        type="number"
+        id="price"
+        name="price"
+        [(ngModel)]="price"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+    </div>
+    <div *ngIf="quantity">
+      <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2"
+        >Enter new Quantity:</label
+      >
+      <input
+        type="number"
+        id="quantity"
+        name="quantity"
+        [(ngModel)]="quantity"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+    </div>
+    <div *ngIf="imageUrl">
+      <label for="image" class="block text-gray-700 text-sm font-bold mb-2"
+        >Choose new Image:</label
+      >
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/*"
+        (change)="uploadFile($event)"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+      <img
+        *ngIf="imageUrl"
+        mat-card-image
+        [src]="imageUrl"
+        alt="uploaded-image"
+        class="max-w-72"
+      />
+    </div>
+    <div *ngIf="description">
+      <label
+        for="description"
+        class="block text-gray-700 text-sm font-bold mb-2"
+        >Enter new Description:</label
+      >
+      <input
+        type="text"
+        id="description"
+        name="description"
+        [(ngModel)]="description"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+    </div>
+    <div *ngIf="currency">
+      <label for="currency" class="block text-gray-700 text-sm font-bold mb-2"
+        >Enter new Currency:</label
+      >
+      <input
+        type="text"
+        id="currency"
+        name="currency"
+        [(ngModel)]="currency"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+      />
+    </div>
+    <div class="flex items-center justify-center">
+      <button
+        type="submit"
+        class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-4 rounded"
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-4 rounded"
+        (click)="close()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

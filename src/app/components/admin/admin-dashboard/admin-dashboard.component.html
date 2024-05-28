@@ -1,56 +1,123 @@
-<h1>ADMIN DASHBOARD</h1>
-<hr />
-<h3>Your Inventory</h3>
-<br />
-<mat-grid-list cols="4">
-  <mat-grid-tile *ngFor="let product of products | async">
-    <mat-card class="product">
-      <mat-card-header>
-        <mat-card-title>{{ product["name"] }}</mat-card-title>
-        <mat-card-subtitle
-          >Price: {{ product["price"] }}
-          {{ product["currency"] }}</mat-card-subtitle
-        >
-        <mat-card-subtitle
-          >In stock: {{ product["quantity"] }}</mat-card-subtitle
-        >
-      </mat-card-header>
-
-      <img
-        mat-card-image
-        [src]="product['image']"
-        alt="{{ product['name'] }}"
-      />
-      <mat-card-content>
-        <p>
-          {{ product["description"] }}
-        </p>
-      </mat-card-content>
-
-      <mat-card-actions
-        ><mat-grid-list cols="3">
-          <button mat-button>Rename Item</button>
-          <button mat-button>Update Price</button>
-          <button mat-button>Edit Quantity</button>
-          <button mat-button>Change Photo</button>
-          <button
-            mat-button
-            (click)="deleteProduct(product['id'], product['image'])"
-          >
-            Remove Item
-          </button>
-        </mat-grid-list></mat-card-actions
-      >
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
-<hr />
-
 <div>
-  <button (click)="openDialog()">List new item</button>
+  <h1>ADMIN DASHBOARD</h1>
+  <hr />
+  <h3 class="text-2xl text-red-500">Your Inventory</h3>
+  <br />
+  <mat-grid-list class="bg-white" cols="4" rowHeight="40rem">
+    <mat-grid-tile class="bg-white" *ngFor="let product of products | async">
+      <mat-card class="product bg-white">
+        <mat-card-header>
+          <mat-card-title>{{ product["name"] }}</mat-card-title>
+          <mat-card-subtitle
+            >Price: {{ product["price"] }}
+            {{ product["currency"] }}</mat-card-subtitle
+          >
+
+          <mat-card-subtitle
+            >In stock: {{ product["quantity"] }}</mat-card-subtitle
+          >
+        </mat-card-header>
+
+        <img
+          mat-card-image
+          class="bg-white px-3"
+          [src]="product['image']"
+          alt="{{ product['name'] }}"
+        />
+        <mat-card-content class="bg-white top-0 pb-2 mb-3">
+          <p class="bg-white">
+            {{ product["description"] }}
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions
+          class="bg-white sticky bottom-0 pt-2 pb-7 mr-[-10px] ml-[-10px] w-auto"
+        >
+          <mat-grid-list class="z-30 w-full" cols="3">
+            <button
+              (click)="
+                openEditProductDialog(
+                  product['id'],
+                  product['name'],
+                  {},
+                  'name'
+                )
+              "
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+            >
+              Rename Item
+            </button>
+            <button
+              (click)="
+                openEditProductDialog(
+                  product['id'],
+                  product['name'],
+                  { description: product['description'] },
+                  'description'
+                )
+              "
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+            >
+              Edit Description
+            </button>
+            <button
+              (click)="
+                openEditProductDialog(
+                  product['id'],
+                  product['name'],
+                  { price: product['price'] },
+                  'price'
+                )
+              "
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+            >
+              Change Price
+            </button>
+            <button
+              (click)="
+                openEditProductDialog(
+                  product['id'],
+                  product['name'],
+                  { quantity: product['quantity'] },
+                  'quantity'
+                )
+              "
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+            >
+              Edit Quantity
+            </button>
+            <button
+              (click)="
+                openEditProductDialog(
+                  product['id'],
+                  product['name'],
+                  { imageUrl: product['image'] },
+                  'imageUrl'
+                )
+              "
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+            >
+              Update Photo
+            </button>
+            <button
+              class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-2 rounded-lg mr-2"
+              (click)="deleteAdminProduct(product['id'], product['image'])"
+            >
+              Remove Item
+            </button>
+          </mat-grid-list></mat-card-actions
+        >
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <hr />
+
+  <div>
+    <button (click)="openNewItemDialog()">List new item</button>
+  </div>
+  <hr />
+  <button type="button" (click)="logout()">Log out</button>
 </div>
-<hr />
-<button type="button" (click)="logout()">Log out</button>
 
 <!-- <mat-card class="product">
   <mat-card-header>

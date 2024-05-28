@@ -31,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CreateProductComponent } from './components/admin/create-product/create-product.component';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
     CustomerRegistrationComponent,
     UnauthorizedComponent,
     CreateProductComponent,
+    UpdateProductComponent,
   ],
   imports: [
     BrowserModule,

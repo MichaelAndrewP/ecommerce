@@ -20,6 +20,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from '@angular/fire/storage';
+import { UpdateProductComponent } from '../update-product/update-product.component';
 import { NotificationService } from 'src/app/services/toastr/notification.service';
 @Component({
   selector: 'app-admin-dashboard',
@@ -27,7 +28,8 @@ import { NotificationService } from 'src/app/services/toastr/notification.servic
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent implements OnDestroy {
-  dialogRef: MatDialogRef<CreateProductComponent> | undefined;
+  createProductDialogRef: MatDialogRef<CreateProductComponent> | undefined;
+  updateProductDialogRef: MatDialogRef<UpdateProductComponent> | undefined;
   products = this.adminService.getProducts();
 
   constructor(
@@ -40,9 +42,9 @@ export class AdminDashboardComponent implements OnDestroy {
     private storage: Storage
   ) {}
 
-  openDialog() {
+  openNewItemDialog() {
     if (!this.dialog.openDialogs.length) {
-      this.dialogRef = this.dialog.open(CreateProductComponent, {
+      this.createProductDialogRef = this.dialog.open(CreateProductComponent, {
         data: {
           close: this.closeDialog.bind(this),
         },
@@ -50,24 +52,46 @@ export class AdminDashboardComponent implements OnDestroy {
     }
   }
 
-  closeDialog() {
-    this.dialogRef?.close();
+  openEditProductDialog(
+    id: string,
+    name: string,
+    product?: {
+      price?: number;
+      quantity?: number;
+      description?: string;
+      currency?: string;
+      imageUrl?: string;
+    },
+    toEdit?: string
+  ) {
+    try {
+      if (!this.dialog.openDialogs.length) {
+        this.updateProductDialogRef = this.dialog.open(UpdateProductComponent, {
+          data: {
+            close: this.closeDialog.bind(this),
+            name: name ?? '',
+            price: product?.price ?? 0,
+            quantity: product?.quantity ?? 0,
+            description: product?.description ?? '',
+            currency: product?.currency ?? 0,
+            imageUrl: product?.imageUrl ?? '',
+            id: id,
+            toEdit: toEdit,
+          },
+        });
+      }
+    } catch (error) {
+      this.toastr.showError('Error!', 'Failed to open dialog');
+      console.error('Failed to open dialog', error);
+    }
   }
 
-  deleteProduct(id: string, imgUrl: string) {
-    const docInstance = doc(this.fireStore, 'products', id);
-    deleteDoc(docInstance)
-      .then(() => {
-        const refPath = ref(this.storage, imgUrl);
-        deleteObject(refPath);
-        this.toastr.showSuccess('Success!', 'Product deleted successfully!');
-      })
-      .catch(() => {
-        this.toastr.showError(
-          'Error removing the Product!',
-          'Please try again later!'
-        );
-      });
+  closeDialog() {
+    this.createProductDialogRef?.close();
+    this.updateProductDialogRef?.close();
+  }
+  deleteAdminProduct(id: string, imgUrl: string) {
+    return this.adminService.deleteProduct(id, imgUrl);
   }
 
   logout() {
