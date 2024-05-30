@@ -1,5 +1,5 @@
 <div>
-  <h1>CUSTOMER DASHBOARD</h1>
+  <h1 class="text-3xl">CUSTOMER DASHBOARD</h1>
   <hr />
   <h3 class="text-2xl text-red-500">Items for sale</h3>
   <br />
@@ -16,6 +16,7 @@
           <mat-card-subtitle
             >Available: {{ product["quantity"] }} pcs</mat-card-subtitle
           >
+          <mat-card-subtitle>Id: {{ product["id"] }} pcs</mat-card-subtitle>
         </mat-card-header>
 
         <img
@@ -47,11 +48,13 @@
   </mat-grid-list>
   <hr />
   <div>
-    <h3 class="text-2xl text-red-500">Cart Quantity: {{ cartQuantity }}</h3>
+    <h3 class="text-2xl text-red-500">
+      You have: {{ cartQuantity }} products in your cart
+    </h3>
   </div>
   <hr />
   <div>
-    <button>Checkout</button>
+    <button (click)="openCartDialog()">View cart</button>
   </div>
   <hr />
   <button type="button" (click)="logout()">Log out</button>

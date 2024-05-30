@@ -14,6 +14,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from '@angular/fire/firestore';
 import { map } from 'rxjs';
 
@@ -35,19 +36,67 @@ export class CustomerService {
 
   getCustomerCartItems(customerId: string) {
     return collectionData(
-      collection(this.fireStore, `customer/${customerId}/products`),
+      collection(this.fireStore, `customer/${customerId}/cart`),
       { idField: 'id' }
     ).pipe(
-      map((actions) => {
-        return actions;
+      map((products) => {
+        return products;
       })
     );
   }
 
+  async changeRowTotal(
+    currentItemPrice: number,
+    cartQuantity: number,
+    productId: string,
+    customerId: string
+  ) {
+    try {
+      const newRowTotal = currentItemPrice * cartQuantity;
+      const productRef = doc(
+        this.fireStore,
+        `customer/${customerId}/cart/${productId}`
+      );
+      const productSnap = await getDoc(productRef);
+      if (productSnap.exists()) {
+        return updateDoc(productRef, {
+          rowTotal: newRowTotal,
+        });
+      }
+    } catch (error) {
+      console.log('Error changing row total', error);
+    }
+  }
+
+  async changeCartQuantity(
+    newQuantity: number,
+    productId: string,
+    customerId: string
+  ) {
+    try {
+      const productRef = doc(
+        this.fireStore,
+        `customer/${customerId}/cart/${productId}`
+      );
+      const productSnap = await getDoc(productRef);
+
+      if (productSnap.exists()) {
+        return updateDoc(productRef, {
+          cartQuantity: newQuantity,
+        });
+      }
+    } catch (error) {
+      console.log('Error changing cart quantity', error);
+    }
+  }
+
   addToCustomerCart(product: any, customerId: string) {
-    return addDoc(
-      collection(this.fireStore, `customer/${customerId}/products`),
-      product
-    );
+    const currentDate = new Date();
+    return addDoc(collection(this.fireStore, `customer/${customerId}/cart`), {
+      ...product,
+      addedAt: currentDate,
+      cartQuantity: 0,
+      rowTotal: 0,
+    });
   }
 }

@@ -29,9 +29,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
 import { CreateProductComponent } from './components/admin/create-product/create-product.component';
-import { provideStorage,getStorage } from '@angular/fire/storage';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
+import { CartComponent } from './components/customer/cart/cart.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +47,7 @@ import { UpdateProductComponent } from './components/admin/update-product/update
     UnauthorizedComponent,
     CreateProductComponent,
     UpdateProductComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +69,8 @@ import { UpdateProductComponent } from './components/admin/update-product/update
     MatDialogModule,
     MatCardModule,
     MatGridListModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
     provideStorage(() => getStorage()),
   ],
   providers: [
