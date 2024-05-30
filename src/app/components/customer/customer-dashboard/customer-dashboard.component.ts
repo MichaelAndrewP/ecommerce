@@ -5,6 +5,7 @@ import { map, take, switchMap } from 'rxjs/operators';
 import { Subscription, of } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { CartComponent } from '../cart/cart.component';
+import { NotificationService } from 'src/app/services/toastr/notification.service';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -24,7 +25,8 @@ export class CustomerDashboardComponent {
   constructor(
     private authService: AuthService,
     private customerService: CustomerService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastr: NotificationService
   ) {}
 
   countCartProducts() {
@@ -48,35 +50,34 @@ export class CustomerDashboardComponent {
     this.subscriptions.push(sub);
   }
 
-  /*  isExistingInCart(productId: string): boolean {
-    let isExisting = true;
-
-    return isExisting;
-  }
- */
-  /*   isExistingInCart(productId: string): boolean {
-    let existingArray: any[] = [];
-    const sub = this.cartItems
-      .pipe(
-        map((products) => {
-          products.map((product) => {
-            if (product['id'] == productId) {
-              existingArray.push(product);
-            }
-          });
-        })
-      )
-      .subscribe();
-    this.subscriptions.push(sub);
-    if (existingArray.length > 0) {
-      return true;
+  async isExistingInCart(cartProductId: string) {
+    try {
+      await this.customerService.isProductExistingInCart(
+        cartProductId,
+        this.userId
+      );
+    } catch (error) {
+      console.log('Error checking if product exists in cart', error);
     }
-    return false;
-  } */
+  }
 
-  addToCart(product: any) {
-    const userId = this.authService.getUserId();
-    return this.customerService.addToCustomerCart(product, userId);
+  async addToCart(product: any) {
+    try {
+      const isExisting = await this.customerService.isProductExistingInCart(
+        product.id,
+        this.userId
+      );
+      if (isExisting) {
+        this.toastr.showError('Error', 'Product already exists in cart');
+        return;
+      }
+      const userId = this.authService.getUserId();
+      this.toastr.showSuccess('Success', 'Product added to cart');
+      return this.customerService.addToCustomerCart(product, userId);
+    } catch (error) {
+      console.log('Error adding to cart', error);
+      return;
+    }
   }
 
   openCartDialog() {

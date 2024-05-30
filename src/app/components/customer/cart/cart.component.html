@@ -46,6 +46,21 @@
         </td>
       </ng-container>
 
+      <!-- Delete Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="text-black text-center">
+          Action
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-black">
+          <button
+            (click)="removeFromCart(element.id)"
+            class="hover:bg-stone-500 hover:text-white text-red-500 py-2 px-4 rounded"
+          >
+            Remove
+          </button>
+        </td>
+      </ng-container>
+
       <tr
         mat-header-row
         *matHeaderRowDef="displayedColumns"
@@ -75,6 +90,7 @@
 
     <div class="flex justify-center">
       <button
+        (click)="checkOut()"
         type="submit"
         class="hover:bg-stone-500 hover:text-white text-stone-500 py-2 px-4 rounded"
       >

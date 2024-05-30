@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { user } from 'rxfire/auth';
 import { Observable, takeUntil, Subject } from 'rxjs';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { NotificationService } from 'src/app/services/toastr/notification.service';
@@ -44,7 +45,7 @@ export class CartComponent {
   customerId: string = this.data.customerId;
   allCartItems: Observable<any> = this.data.customerCartItems;
   /* uniqueItems: Observable<any> = this.data.uniqueItems; */
-  displayedColumns: string[] = ['name', 'price', 'quantity', 'total'];
+  displayedColumns: string[] = ['name', 'price', 'quantity', 'total', 'action'];
   dataSource = this.customerService.getCustomerCartItems(this.customerId);
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -75,8 +76,11 @@ export class CartComponent {
     currentItemPrice: string
   ) {
     const newQuantity =
-      parseInt((event.target as HTMLInputElement)?.value) || 0;
+      parseInt((event.target as HTMLInputElement)?.value) || 1;
     const parsedCurrentItemPrice = parseInt(currentItemPrice) || 0;
+    console.log('New Quantity:', newQuantity);
+    console.log('Product ID:', productId);
+    console.log('Current Item Price:', currentItemPrice);
     this.totalProgressSpinner = true;
     this.totalAmount = 0;
     try {
@@ -97,6 +101,34 @@ export class CartComponent {
       this.toastr.showError('Error', 'Quantity not increased');
     } finally {
       this.totalProgressSpinner = false;
+    }
+  }
+
+  async removeFromCart(productId: string) {
+    /*  this.totalProgressSpinner = true; */
+    try {
+      await this.customerService.deleteProductFromCart(
+        productId,
+        this.customerId
+      );
+      this.toastr.showSuccess('Success', 'Product removed from cart');
+      this.calculateTotal();
+    } catch (error) {
+      this.toastr.showError('Error', 'Error removing product from cart');
+      console.log('Error removing product from cart', error);
+    } finally {
+      /*     this.totalProgressSpinner = false; */
+    }
+  }
+
+  async checkOut() {
+    try {
+      this.customerService.checkOut(this.customerId);
+      this.toastr.showSuccess('Success', 'Checked out successfully');
+      this.data.close();
+    } catch (error) {
+      this.toastr.showError('Error', 'Error checking out');
+      console.log('Error checking out', error);
     }
   }
 
