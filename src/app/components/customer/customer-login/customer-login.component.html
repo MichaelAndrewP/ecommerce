@@ -13,11 +13,13 @@
       [(ngModel)]="password"
     />
   </div>
-  <button type="submit">Login</button>
+  <button type="submit" class="custom-button">Login</button>
   <span> or </span>
-  <a routerLink="/customer/registration">Don't have an account?</a>
+  <a routerLink="/customer/registration" class="custom-button"
+    >Don't have an account?</a
+  >
   <hr />
-  <button type="button" (click)="signInWithGoogle()">
+  <button type="button" (click)="signInWithGoogle()" class="custom-button">
     Sign-in with Google
   </button>
 </form>
