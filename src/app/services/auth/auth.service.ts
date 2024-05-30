@@ -43,10 +43,13 @@ export class AuthService {
   customerCollectionInstance = collection(this.fireStore, 'customer');
 
   getUserId() {
-    const tokenId = localStorage.getItem('idToken');
-    const tokenPayload = tokenId ? this.decodeToken(tokenId) : null;
-    console.log('tokenPayload', tokenPayload);
-    return tokenPayload ? tokenPayload.user_id : null;
+    try {
+      const tokenId = localStorage.getItem('idToken');
+      const tokenPayload = tokenId ? this.decodeToken(tokenId) : null;
+      return tokenPayload ? tokenPayload.user_id : null;
+    } catch (error) {
+      console.log('Error getting user id');
+    }
   }
 
   getUserRole() {
