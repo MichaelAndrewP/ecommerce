@@ -35,27 +35,31 @@ export class RoleGuard implements CanActivate {
     try {
       const userRole = this.authService.getUserRole();
       const userEmail = this.authService.getUserEmail() ?? '';
-
-      console.log('checking user email', userEmail);
+      console.log('userRole', userRole);
+      console.log('Expected', expectedRole);
+      console.log('userEmail', userEmail);
+      console.log('emailValie', this.authService.isEmailValid(userEmail));
       if (
         expectedRole === userRole &&
-        this.authService.isEmailValid(userEmail)
+        this.authService.isEmailValid(userEmail) /* ||
+        (expectedRole !== userRole && this.authService.isEmailValid(userEmail)) */
       ) {
         return true;
       }
 
       if (
-        this.authService.isLoggedIn() &&
-        expectedRole === userRole &&
+        expectedRole !== userRole &&
         this.authService.isEmailValid(userEmail)
       ) {
-        this.router.navigate([navigateDashboardRoute]);
+        const navigateTo = `${userRole}/dashboard`;
+        this.router.navigate([navigateTo]);
         return true;
       }
     } catch (error) {
       console.error('Error decoding token', error);
     }
 
+    console.log('Unauthorized access');
     this.router.navigate(['unauthorized']);
     return false;
   }

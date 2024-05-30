@@ -66,8 +66,13 @@ export class CustomerLoginComponent {
   }
 
   ngOnInit() {
+    /* console.log('isloggedin', this.authService.isLoggedIn()); */
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['admin/dashboard']);
+      if (localStorage.getItem('isAdmin') === 'true') {
+        this.router.navigate(['admin/dashboard']);
+      } else this.router.navigate(['customer/dashboard']);
+    } else {
+      this.router.navigate(['customer/login']);
     }
   }
 
