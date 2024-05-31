@@ -22,6 +22,7 @@ import {
   runTransaction,
 } from '@angular/fire/firestore';
 import { map } from 'rxjs';
+import { NotificationService } from '../toastr/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,10 @@ import { map } from 'rxjs';
 export class CustomerService {
   collectionInstance = collection(this.fireStore, 'products');
 
-  constructor(private fireStore: Firestore) {}
+  constructor(
+    private fireStore: Firestore,
+    private toastr: NotificationService
+  ) {}
 
   async isProductExistingInCart(productId: string, customerId: string) {
     const cartRef = collection(this.fireStore, `customer/${customerId}/cart`);
@@ -139,21 +143,48 @@ export class CustomerService {
     });
   }
 
-  async addToCheckedOutProducts(customerId: string, transaction: any) {
+  /* async addToCheckedOutProducts(
+    customerId: string,
+    transaction: any
+  ): Promise<boolean> {
     try {
       const currentDate = new Date();
       const cartRef = collection(this.fireStore, `customer/${customerId}/cart`);
       const cartItems = await getDocs(cartRef);
-      cartItems.docs.forEach(async (docCartItem) => {
-        addDoc(collection(this.fireStore, `customer/${customerId}/checkout`), {
-          ...docCartItem.data(),
-          checkedOutAt: currentDate,
-        });
-      });
+      for (const docCartItem of cartItems.docs) {
+        const productId = docCartItem.data()['id'];
+        if (await this.checkProductQuantity(productId)) {
+          const checkoutRef = doc(
+            this.fireStore,
+            `customer/${customerId}/checkout`,
+            docCartItem.id
+          );
+          transaction.set(checkoutRef, {
+            ...docCartItem.data(),
+            checkedOutAt: currentDate,
+          });
+          this.updateProductStock(
+            productId,
+            docCartItem.data()['cartQuantity']
+          );
+          this.clearCart(customerId, transaction);
+          return true;
+        } else {
+          this.toastr.showError(
+            'Error',
+            `Checkout failed. ${docCartItem.data()['name']} is out of stock`
+          );
+          throw new Error(
+            `Product ${docCartItem.data()['name']} is out of stock`
+          );
+        }
+      }
+      return true;
     } catch (error) {
       console.log('Error adding to checked out products', error);
+      return false;
     }
-  }
+  } */
 
   async deleteProductFromCart(productId: string, customerId: string) {
     try {
@@ -185,6 +216,7 @@ export class CustomerService {
           this.fireStore,
           `customer/${customerId}/cart/${docId}`
         );
+        await this.checkProductQuantity(docId);
         await deleteDoc(productRef);
       });
     } catch (error) {
@@ -192,22 +224,86 @@ export class CustomerService {
     }
   }
 
-  async updateProductStock(productId: string, newStock: number) {
-    const docRef = doc(this.fireStore, 'products', productId);
-    const updatedData = {
-      stock: newStock,
-    };
+  /*   async updateProductStock(productId: string, newStock: number) {
+    try {
+      const docRef = doc(this.fireStore, 'products', productId);
+      const product = (await getDoc(docRef)).data() as DocumentData;
+      await this.checkProductQuantity(productId);
+      const updatedData = {
+        quantity: product['quantity'] - newStock,
+      };
 
-    return updateDoc(docRef, updatedData);
+      return updateDoc(docRef, updatedData);
+    } catch (error) {
+      console.log('Error updating product stock', error);
+    }
+  } */
+
+  async checkProductQuantity(productId: string): Promise<boolean> {
+    try {
+      const productRef = doc(this.fireStore, 'products', productId);
+      const productDoc = await getDoc(productRef);
+      const productData: DocumentData | undefined = productDoc.data();
+      const productQuantity = productData ? productData['quantity'] : 0;
+      console.log('Product quantity', productQuantity);
+      if (productQuantity <= 0) {
+        console.log('Product out of stock');
+        return false;
+      } else {
+        console.log('Product in stock');
+        return true;
+      }
+    } catch (error) {
+      console.log('Error checking product quantity', error);
+      return false;
+    }
   }
 
   async checkOut(customerId: string) {
     try {
       await runTransaction(this.fireStore, async (transaction) => {
-        await this.addToCheckedOutProducts(customerId, transaction);
-        await this.clearCart(customerId, transaction);
+        const cartRef = collection(
+          this.fireStore,
+          `customer/${customerId}/cart`
+        );
+        const cartItems = await getDocs(cartRef);
+        for (const docCartItem of cartItems.docs) {
+          const productId = docCartItem.data()['id'];
+          const productRef = doc(this.fireStore, `products/${productId}`);
+          const productSnap = await transaction.get(productRef);
+          const productData = productSnap.data();
+          if (
+            productData &&
+            productData['quantity'] >= docCartItem.data()['cartQuantity']
+          ) {
+            const checkoutRef = doc(
+              this.fireStore,
+              `customer/${customerId}/checkout`,
+              docCartItem.id
+            );
+            transaction.set(checkoutRef, {
+              ...docCartItem.data(),
+              checkedOutAt: new Date(),
+            });
+            transaction.update(productRef, {
+              quantity:
+                productData['quantity'] - docCartItem.data()['cartQuantity'],
+            });
+            this.clearCart(customerId, transaction);
+          } else {
+            this.toastr.showError(
+              'Error',
+              `Checkout failed. ${docCartItem.data()['name']} is out of stock`
+            );
+            throw new Error(
+              `Product ${docCartItem.data()['name']} is out of stock`
+            );
+          }
+        }
+        this.toastr.showSuccess('Success', 'Checkout successful');
       });
     } catch (error) {
+      /* this.toastr.showError('Error', `${error}`); */
       console.log('Error checking out', error);
     }
   }

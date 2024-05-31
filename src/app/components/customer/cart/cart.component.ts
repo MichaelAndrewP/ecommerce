@@ -17,22 +17,6 @@ export interface CartItem {
   rowTotal: number;
   cartQuantity: number;
 }
-/* 
-const ELEMENT_DATA: CartItem[] = [
-  { name: 'Product 1', price: 100, quantity: 1, total: 100 },
-  { name: 'Product 2', price: 200, quantity: 1, total: 200 },
-  { name: 'Product 3', price: 300, quantity: 1, total: 300 },
-  { name: 'Product 1', price: 100, quantity: 1, total: 100 },
-  { name: 'Product 2', price: 200, quantity: 1, total: 200 },
-  { name: 'Product 3', price: 300, quantity: 1, total: 300 },
-  { name: 'Product 1', price: 100, quantity: 1, total: 100 },
-  { name: 'Product 2', price: 200, quantity: 1, total: 200 },
-  { name: 'Product 3', price: 300, quantity: 1, total: 300 },
-  { name: 'Product 3', price: 300, quantity: 1, total: 300 },
-  { name: 'Product 1', price: 100, quantity: 1, total: 100 },
-  { name: 'Product 2', price: 200, quantity: 1, total: 200 },
-  { name: 'Product 3', price: 300, quantity: 1, total: 300 },
-]; */
 
 @Component({
   selector: 'app-cart',
@@ -123,9 +107,8 @@ export class CartComponent {
 
   async checkOut() {
     try {
-      this.customerService.checkOut(this.customerId);
-      this.toastr.showSuccess('Success', 'Checked out successfully');
-      this.data.close();
+      await this.customerService.checkOut(this.customerId);
+      this.close();
     } catch (error) {
       this.toastr.showError('Error', 'Error checking out');
       console.log('Error checking out', error);
