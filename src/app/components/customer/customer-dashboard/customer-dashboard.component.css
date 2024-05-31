@@ -40,3 +40,34 @@ mat-card-actions,
 .actionList {
   background: white;
 }
+
+.non-cart-button {
+  background-color: rgb(49, 184, 56);
+}
+.logout-button {
+  background-color: rgb(184, 49, 49);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
