@@ -36,10 +36,7 @@ export class AdminDashboardComponent implements OnDestroy {
     private authService: AuthService,
     private adminService: AdminService,
     public dialog: MatDialog,
-    public matCardModule: MatCardModule,
-    private fireStore: Firestore,
-    private toastr: NotificationService,
-    private storage: Storage
+    private toastr: NotificationService
   ) {}
 
   openNewItemDialog() {
