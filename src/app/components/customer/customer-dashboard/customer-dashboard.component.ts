@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/services/toastr/notification.servic
   styleUrls: ['./customer-dashboard.component.css'],
 })
 export class CustomerDashboardComponent {
+  private unsubscribe$ = new Subject<void>();
   productsWithCartStatus$: Observable<any> | undefined;
 
   cartDialogRef: MatDialogRef<CartComponent> | undefined;
@@ -110,22 +111,26 @@ export class CustomerDashboardComponent {
     this.productsWithCartStatus$ = combineLatest([
       this.customerService.getListedProducts(),
       this.customerService.getCustomerCartItems(this.userId),
-    ]).pipe(
-      map(([products, cartItems]) => {
-        return products.map((product) => {
-          const cartItem = cartItems.find(
-            (item) => item['id'] === product['id']
-          );
-          return {
-            ...product,
-            isInCart: !!cartItem,
-          };
-        });
-      })
-    );
+    ])
+      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        map(([products, cartItems]) => {
+          return products.map((product) => {
+            const cartItem = cartItems.find(
+              (item) => item['id'] === product['id']
+            );
+            return {
+              ...product,
+              isInCart: !!cartItem,
+            };
+          });
+        })
+      );
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
