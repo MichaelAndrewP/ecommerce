@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomerService } from 'src/app/services/customer/customer.service';
-import { map, take, switchMap } from 'rxjs/operators';
-import { Subscription, of } from 'rxjs';
+import { map, take, switchMap, takeUntil } from 'rxjs/operators';
+import { Subscription, of, Subject, Observable, combineLatest } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { CartComponent } from '../cart/cart.component';
 import { NotificationService } from 'src/app/services/toastr/notification.service';
@@ -13,11 +13,13 @@ import { NotificationService } from 'src/app/services/toastr/notification.servic
   styleUrls: ['./customer-dashboard.component.css'],
 })
 export class CustomerDashboardComponent {
+  productsWithCartStatus$: Observable<any> | undefined;
+
   cartDialogRef: MatDialogRef<CartComponent> | undefined;
 
   userId = this.authService.getUserId();
-  products = this.customerService.getListedProducts();
-  cartItems = this.customerService.getCustomerCartItems(this.userId);
+  products$ = this.customerService.getListedProducts();
+  cartItems$ = this.customerService.getCustomerCartItems(this.userId);
   uniqueItems = new Set();
   cartQuantity: number = 0;
   private subscriptions: Subscription[] = [];
@@ -30,7 +32,7 @@ export class CustomerDashboardComponent {
   ) {}
 
   countCartProducts() {
-    const sub = this.cartItems
+    const sub = this.cartItems$
       .pipe(
         map((products) => {
           const uniqueProducts = new Set(
@@ -50,7 +52,8 @@ export class CustomerDashboardComponent {
     this.subscriptions.push(sub);
   }
 
-  async isExistingInCart(cartProductId: string) {
+  // Simpler version without making use of combineLatest
+  /*   async isExistingInCart(cartProductId: string) {
     try {
       await this.customerService.isProductExistingInCart(
         cartProductId,
@@ -59,7 +62,7 @@ export class CustomerDashboardComponent {
     } catch (error) {
       console.log('Error checking if product exists in cart', error);
     }
-  }
+  } */
 
   async addToCart(product: any) {
     try {
@@ -86,7 +89,7 @@ export class CustomerDashboardComponent {
       this.cartDialogRef = this.dialog.open(CartComponent, {
         data: {
           close: this.closeDialog.bind(this),
-          customerCartItems: this.cartItems,
+          customerCartItems: this.cartItems$,
           uniqueItems: uniqueItems$,
           customerId: this.userId,
         },
@@ -104,6 +107,22 @@ export class CustomerDashboardComponent {
 
   ngOnInit() {
     this.countCartProducts();
+    this.productsWithCartStatus$ = combineLatest([
+      this.customerService.getListedProducts(),
+      this.customerService.getCustomerCartItems(this.userId),
+    ]).pipe(
+      map(([products, cartItems]) => {
+        return products.map((product) => {
+          const cartItem = cartItems.find(
+            (item) => item['id'] === product['id']
+          );
+          return {
+            ...product,
+            isInCart: !!cartItem,
+          };
+        });
+      })
+    );
   }
 
   ngOnDestroy() {
