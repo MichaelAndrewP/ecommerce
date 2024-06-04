@@ -14,9 +14,8 @@
         <mat-card-header>
           <mat-card-title>{{ product["name"] }}</mat-card-title>
           <mat-card-subtitle
-            >Price: {{ product["price"] }}
-            {{ product["currency"] }}</mat-card-subtitle
-          >
+            >Price: {{ product["price"] | currency : "PHP" }}
+          </mat-card-subtitle>
 
           <mat-card-subtitle
             >Available: {{ product["quantity"] }} pcs</mat-card-subtitle

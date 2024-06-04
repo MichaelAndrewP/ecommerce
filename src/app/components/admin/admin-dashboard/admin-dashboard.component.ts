@@ -20,6 +20,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from '@angular/fire/storage';
+import { ADMIN } from 'src/app/constants/roles';
 import { UpdateProductComponent } from '../update-product/update-product.component';
 import { NotificationService } from 'src/app/services/toastr/notification.service';
 @Component({
@@ -27,7 +28,7 @@ import { NotificationService } from 'src/app/services/toastr/notification.servic
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
 })
-export class AdminDashboardComponent implements OnDestroy {
+export class AdminDashboardComponent {
   createProductDialogRef: MatDialogRef<CreateProductComponent> | undefined;
   updateProductDialogRef: MatDialogRef<UpdateProductComponent> | undefined;
   products = this.adminService.getProducts();
@@ -92,10 +93,8 @@ export class AdminDashboardComponent implements OnDestroy {
   }
 
   logout() {
-    this.authService.logout('admin');
+    this.authService.logout(ADMIN);
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.closeDialog();
