@@ -35,6 +35,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { UpdateProductComponent } from './components/admin/update-product/update-product.component';
 import { CartComponent } from './components/customer/cart/cart.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ComputeTotalAmountPipe } from './pipes/compute-total-amount.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +49,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CreateProductComponent,
     UpdateProductComponent,
     CartComponent,
+    ComputeTotalAmountPipe,
   ],
   imports: [
     BrowserModule,

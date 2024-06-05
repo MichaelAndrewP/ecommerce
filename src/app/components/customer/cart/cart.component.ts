@@ -39,7 +39,8 @@ export class CartComponent {
     public matTableDataSource: MatTableDataSource<CartItem> */
   ) {}
 
-  calculateTotal() {
+  // Remove and replaced with computeTotalAmount pipe
+  /*   calculateTotal() {
     try {
       this.dataSource.subscribe((cartItems) => {
         this.totalAmount = 0;
@@ -52,7 +53,7 @@ export class CartComponent {
     } finally {
       this.totalProgressSpinner = false;
     }
-  }
+  } */
 
   async changeCartItemQuantity(
     event: Event,
@@ -77,10 +78,10 @@ export class CartComponent {
             productId,
             this.customerId
           );
-        })
-        .then(async () => {
-          this.calculateTotal();
         });
+      /*  .then(async () => {
+          this.calculateTotal();
+        }); */
     } catch (error) {
       this.toastr.showError('Error', 'Quantity not increased');
     } finally {
@@ -96,7 +97,7 @@ export class CartComponent {
         this.customerId
       );
       this.toastr.showSuccess('Success', 'Product removed from cart');
-      this.calculateTotal();
+      /* this.calculateTotal(); */
     } catch (error) {
       this.toastr.showError('Error', 'Error removing product from cart');
       console.log('Error removing product from cart', error);
@@ -116,7 +117,7 @@ export class CartComponent {
   }
 
   ngOnInit() {
-    this.calculateTotal();
+    /*     this.calculateTotal(); */
     console.log('Hi');
     console.log('Cart items', this.data.cartItems);
     console.log('Unique items', this.data.uniqueItems);

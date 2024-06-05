@@ -78,7 +78,8 @@
   <form>
     <div class="flex justify-center">
       <h2 *ngIf="!totalProgressSpinner" class="font-bold">
-        Total Amount: {{ totalAmount | currency : "PHP" }}
+        Total Amount:
+        {{ dataSource | async | computeTotalAmount | currency : "PHP" }}
       </h2>
       <mat-spinner
         *ngIf="totalProgressSpinner"
