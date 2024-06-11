@@ -1,0 +1,146 @@
+[debug] [2024-06-07T03:30:15.196Z] ----------------------------------------------------------------------
+[debug] [2024-06-07T03:30:15.199Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2024-06-07T03:30:15.200Z] CLI Version:   12.9.1
+[debug] [2024-06-07T03:30:15.201Z] Platform:      win32
+[debug] [2024-06-07T03:30:15.201Z] Node Version:  v18.18.0
+[debug] [2024-06-07T03:30:15.203Z] Time:          Fri Jun 07 2024 11:30:15 GMT+0800 (Philippine Standard Time)
+[debug] [2024-06-07T03:30:15.203Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-07T03:30:15.354Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-07T03:30:15.355Z] > authorizing via signed-in user (pazmichaelandrew70@gmail.com)
+[debug] [2024-06-07T03:30:15.355Z] [iam] checking project ecommerce-9955d for permissions ["firebase.projects.get"]
+[debug] [2024-06-07T03:30:15.359Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecommerce-9955d:testIamPermissions [none]
+[debug] [2024-06-07T03:30:15.360Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecommerce-9955d:testIamPermissions x-goog-quota-user=projects/ecommerce-9955d
+[debug] [2024-06-07T03:30:15.360Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecommerce-9955d:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-06-07T03:30:16.745Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecommerce-9955d:testIamPermissions 200
+[debug] [2024-06-07T03:30:16.745Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecommerce-9955d:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-06-07T03:30:16.751Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-06-07T03:30:16.755Z] defaultcredentials: writing to file C:\Users\MMY\AppData\Roaming\firebase\pazmichaelandrew70_gmail_com_application_default_credentials.json
+[debug] [2024-06-07T03:30:16.757Z] DEBUG: Setting GAC to C:\Users\MMY\AppData\Roaming\firebase\pazmichaelandrew70_gmail_com_application_default_credentials.json
+[debug] [2024-06-07T03:30:16.758Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-9955d/adminSdkConfig [none]
+[debug] [2024-06-07T03:30:18.774Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-9955d/adminSdkConfig 200
+[debug] [2024-06-07T03:30:18.774Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ecommerce-9955d/adminSdkConfig {"projectId":"ecommerce-9955d","storageBucket":"ecommerce-9955d.appspot.com","locationId":"us-central"}
+[debug] [2024-06-07T03:30:18.790Z] [functions] Watching "C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions" for Cloud Functions...
+[debug] [2024-06-07T03:30:18.796Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-06-07T03:30:21.382Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "dev": "npm run build && firebase emulators:start --inspect-functions --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "firebase-tools": "^12.9.1",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2024-06-07T03:30:21.382Z] Building nodejs source
+[debug] [2024-06-07T03:30:21.383Z] Failed to find version of module node: reached end of search path C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules
+[info] +  functions: Using node@18 from host. 
+[debug] [2024-06-07T03:30:21.386Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-06-07T03:30:21.400Z] Found firebase-functions binary at 'C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8328
+
+[debug] [2024-06-07T03:30:22.426Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-06-07T03:30:22.463Z] [functions] Loaded functions definitions from source: helloWorld.
+[debug] [2024-06-07T03:30:22.465Z] [functions[us-central1-helloWorld]] http function initialized (http://127.0.0.1:5000/ecommerce-9955d/us-central1/helloWorld).
+[info] i  functions: Loaded functions: helloWorld 
+[warn] !  functions: The following emulators are not running, calls to these services will affect production: firestore, database, pubsub, storage, eventarc 
+[debug] [2024-06-07T06:42:43.714Z] DEBUG: File C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\lib\index.js.map changed, reloading triggers
+[debug] [2024-06-07T06:42:43.725Z] DEBUG: File C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\lib\index.js changed, reloading triggers
+[debug] [2024-06-07T06:42:44.732Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-06-07T06:42:47.376Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "dev": "npm run build && firebase emulators:start --inspect-functions --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "firebase-tools": "^12.9.1",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2024-06-07T06:42:47.377Z] Building nodejs source
+[debug] [2024-06-07T06:42:47.378Z] Failed to find version of module node: reached end of search path C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules
+[info] +  functions: Using node@18 from host. 
+[debug] [2024-06-07T06:42:47.383Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-06-07T06:42:47.416Z] Found firebase-functions binary at 'C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules\.bin\firebase-functions'
+[debug] [2024-06-07T06:42:47.443Z] DEBUG: File C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\lib\index.js changed, reloading triggers
+[info] Serving at port 8511
+
+[debug] [2024-06-07T06:42:48.469Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2024-06-07T06:42:51.738Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "dev": "npm run build && firebase emulators:start --inspect-functions --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "firebase-tools": "^12.9.1",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2024-06-07T06:42:51.738Z] Building nodejs source
+[debug] [2024-06-07T06:42:51.738Z] Failed to find version of module node: reached end of search path C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules
+[info] +  functions: Using node@18 from host. 
+[debug] [2024-06-07T06:42:51.740Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-06-07T06:42:51.750Z] Found firebase-functions binary at 'C:\Users\MMY\Desktop\PULSAR DEV\Angular Training\ecommerce\ecommerce\functions\node_modules\.bin\firebase-functions'
+[debug] [2024-06-07T06:42:51.779Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-06-07T06:42:51.886Z] [functions] Loaded functions definitions from source: helloWorld.
+[info] Serving at port 8455
+
+[debug] [2024-06-07T06:42:53.236Z] Got response from /__/functions.yaml {"endpoints":{"helloWorld":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"helloWorld"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-06-07T06:42:53.340Z] [functions] Loaded functions definitions from source: helloWorld.

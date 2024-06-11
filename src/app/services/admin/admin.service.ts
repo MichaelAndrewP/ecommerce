@@ -15,6 +15,9 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDocs,
+  query,
+  where,
 } from '@angular/fire/firestore';
 import { map, finalize, from, Observable, switchMap } from 'rxjs';
 
@@ -54,8 +57,19 @@ export class AdminService {
         );
       });
   }
+  async updateProductName(id: string, newName: string) {
+    // Query the 'products' collection for documents with the new name
+    const productsRef = collection(this.fireStore, 'products');
+    const snapshot = await getDocs(
+      query(productsRef, where('name', '==', newName))
+    );
 
-  updateProductName(id: string, newName: string) {
+    if (!snapshot.empty) {
+      this.toastr.showError('Error!', 'Product with this name already exists');
+      return;
+    }
+
+    // If no existing document with the new name was found, update the document
     const docInstance = doc(this.fireStore, 'products', id);
     const updatedData = {
       name: newName,

@@ -11,8 +11,12 @@ import { CustomerLoginComponent } from './components/customer/customer-login/cus
 import { CustomerRegistrationComponent } from './components/customer/customer-registration/customer-registration.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import {
+  provideFirestore,
+  getFirestore,
+  connectFirestoreEmulator,
+} from '@angular/fire/firestore';
 
 import { FormsModule } from '@angular/forms';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized/unauthorized.component';
@@ -36,6 +40,12 @@ import { UpdateProductComponent } from './components/admin/update-product/update
 import { CartComponent } from './components/customer/cart/cart.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ComputeTotalAmountPipe } from './pipes/compute-total-amount.pipe';
+import {
+  provideFunctions,
+  getFunctions,
+  connectFunctionsEmulator,
+} from '@angular/fire/functions';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,8 +66,20 @@ import { ComputeTotalAmountPipe } from './pipes/compute-total-amount.pipe';
     AppRoutingModule,
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (environment.production === false) {
+        connectAuthEmulator(auth, 'http://127.0.0.1:2000');
+      }
+      return auth;
+    }),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      if (environment.production === false) {
+        connectFirestoreEmulator(firestore, '127.0.0.1', 1998);
+      }
+      return firestore;
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
@@ -74,6 +96,13 @@ import { ComputeTotalAmountPipe } from './pipes/compute-total-amount.pipe';
     MatTableModule,
     MatProgressSpinnerModule,
     provideStorage(() => getStorage()),
+    provideFunctions(() => {
+      const functions = getFunctions();
+      if (environment.production === false) {
+        connectFunctionsEmulator(functions, '127.0.0.1', 5001);
+      }
+      return functions;
+    }),
   ],
   providers: [
     provideAnimations(), // required animations providers

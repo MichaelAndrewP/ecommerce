@@ -38,6 +38,7 @@ const routes: Routes = [
   {
     path: 'customer/login',
     component: CustomerLoginComponent,
+    /*     canActivate: [RoleGuard],
     data: { role: 'customer' }, */
   },
   { path: 'customer/registration', component: CustomerRegistrationComponent },

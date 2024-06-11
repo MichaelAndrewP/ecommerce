@@ -5,5 +5,43 @@
       "source": ".",
       "frameworksBackend": {}
     }
-  ]
+  ],
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 2000
+    },
+    "firestore": {
+      "port": 1998
+    },
+    "hosting": {
+      "port": 2002
+    },
+    "storage": {
+      "port": 2003,
+      "rules": "storage.rules"
+    },
+    "ui": {
+      "enabled": true,
+      "port": 2004
+    },
+    "singleProjectMode": true
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
 }

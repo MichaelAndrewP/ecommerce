@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { map, take, switchMap, takeUntil } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { NotificationService } from 'src/app/services/toastr/notification.servic
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
   styleUrls: ['./customer-dashboard.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerDashboardComponent {
   private unsubscribe$ = new Subject<void>();

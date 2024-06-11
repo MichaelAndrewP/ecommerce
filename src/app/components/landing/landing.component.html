@@ -1,12 +1,28 @@
-<h1>Landing Page</h1>
-<a routerLink="/admin/login" class="custom-button">Log-in as Admin</a>
-<p>Sample account for your to login to for testing:</p>
-<p>email: admin@gmail.com</p>
-<p>password: admin123</p>
-<hr />
-<a routerLink="/customer/login" class="custom-button">Log-in as Customer</a>
-<hr />
-<a routerLink="/customer/registration" class="custom-button"
-  >Register Customer Account
-</a>
-<hr />
+<div
+  class="flex flex-col items-center justify-center min-h-screen bg-gray-200 space-y-6"
+>
+  <h1 class="text-2xl font-bold mb-4 text-center">Landing Page</h1>
+  <a
+    routerLink="/admin/login"
+    class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50"
+    >Log-in as Admin</a
+  >
+  <div class="text-center">
+    <p>Sample account for your to login to for testing:</p>
+    <p>email: admin@gmail.com</p>
+    <p>password: admin123</p>
+  </div>
+  <hr class="w-full border-gray-300" />
+  <a
+    routerLink="/customer/login"
+    class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-opacity-50"
+    >Log-in as Customer</a
+  >
+  <hr class="w-full border-gray-300" />
+  <a
+    routerLink="/customer/registration"
+    class="py-2 px-4 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50"
+    >Register Customer Account</a
+  >
+  <hr class="w-full border-gray-300" />
+</div>

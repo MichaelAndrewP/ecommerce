@@ -210,7 +210,7 @@ export class CustomerService {
     try {
       const cartRef = collection(this.fireStore, `customer/${customerId}/cart`);
       const cartItems = await getDocs(cartRef);
-      cartItems.docs.forEach(async (docCartItem) => {
+      cartItems.docs.forEach(async (docCartItem: { id: any }) => {
         const docId = docCartItem.id;
         const productRef = doc(
           this.fireStore,
@@ -261,47 +261,59 @@ export class CustomerService {
 
   async checkOut(customerId: string) {
     try {
-      await runTransaction(this.fireStore, async (transaction) => {
-        const cartRef = collection(
-          this.fireStore,
-          `customer/${customerId}/cart`
-        );
-        const cartItems = await getDocs(cartRef);
-        for (const docCartItem of cartItems.docs) {
-          const productId = docCartItem.data()['id'];
-          const productRef = doc(this.fireStore, `products/${productId}`);
-          const productSnap = await transaction.get(productRef);
-          const productData = productSnap.data();
-          if (
-            productData &&
-            productData['quantity'] >= docCartItem.data()['cartQuantity']
-          ) {
-            const checkoutRef = doc(
-              this.fireStore,
-              `customer/${customerId}/checkout`,
-              docCartItem.id
-            );
-            transaction.set(checkoutRef, {
-              ...docCartItem.data(),
-              checkedOutAt: new Date(),
-            });
-            transaction.update(productRef, {
-              quantity:
-                productData['quantity'] - docCartItem.data()['cartQuantity'],
-            });
-            this.clearCart(customerId, transaction);
-          } else {
-            this.toastr.showError(
-              'Error',
-              `Checkout failed. ${docCartItem.data()['name']} is out of stock`
-            );
-            throw new Error(
-              `Product ${docCartItem.data()['name']} is out of stock`
-            );
+      await runTransaction(
+        this.fireStore,
+        async (transaction: {
+          get: (arg0: any) => any;
+          set: (arg0: any, arg1: any) => void;
+          update: (arg0: any, arg1: { quantity: number }) => void;
+        }) => {
+          // runs a transaction
+          const cartRef = collection(
+            this.fireStore,
+            `customer/${customerId}/cart`
+          );
+          const cartItems = await getDocs(cartRef);
+          for (const docCartItem of cartItems.docs) {
+            const productId = docCartItem.data()['id'];
+            const productRef = doc(this.fireStore, `products/${productId}`);
+            const productSnap = await transaction.get(productRef);
+            const productData = productSnap.data(); // gets the product data
+            if (
+              productData &&
+              productData['quantity'] >= docCartItem.data()['cartQuantity'] // checks if the product quantity is greater than the cart quantity
+            ) {
+              const checkoutRef = doc(
+                this.fireStore,
+                `customer/${customerId}/checkout`,
+                docCartItem.id
+              ); // creates a reference to the checkout collection
+
+              // sets the checkout data (adds it as a new document in the checkout sub-collection)
+              transaction.set(checkoutRef, {
+                ...docCartItem.data(),
+                checkedOutAt: new Date(),
+              });
+
+              // updates the product quantity
+              transaction.update(productRef, {
+                quantity:
+                  productData['quantity'] - docCartItem.data()['cartQuantity'],
+              });
+              this.clearCart(customerId, transaction);
+            } else {
+              this.toastr.showError(
+                'Error',
+                `Checkout failed. ${docCartItem.data()['name']} is out of stock`
+              );
+              throw new Error(
+                `Product ${docCartItem.data()['name']} is out of stock`
+              );
+            }
           }
+          this.toastr.showSuccess('Success', 'Checkout successful');
         }
-        this.toastr.showSuccess('Success', 'Checkout successful');
-      });
+      );
     } catch (error) {
       /* this.toastr.showError('Error', `${error}`); */
       console.log('Error checking out', error);
