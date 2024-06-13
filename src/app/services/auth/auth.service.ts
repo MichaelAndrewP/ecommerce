@@ -190,10 +190,10 @@ export class AuthService {
   emailAndPasswordRegistration(email: string, password: string) {
     createUserWithEmailAndPassword(this.fireAuth, email, password)
       .then((res) => {
-        this.addCustomerDocument(res.user.uid, {
+        /*   this.addCustomerDocument(res.user.uid, {
           email: email,
           isAdmin: false,
-        });
+        }); */
         console.log('Resgistration response', res);
         this.router.navigate(['customer/dashboard']);
         alert('Registration Successful');
