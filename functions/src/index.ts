@@ -62,7 +62,6 @@ export const updateProduct = onDocumentUpdated(
 
 export const assginUserRole = functions.auth.user().onCreate(async (user) => {
   try {
-    console.log('User: ', user);
     await admin.firestore().collection('customer').doc(user.uid).set({
       email: user.email,
       role: 'customer',
