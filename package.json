@@ -24,6 +24,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "angular-animations": "^0.11.0",
     "ngx-toastr": "^16.2.0",
+    "nodemailer": "^6.9.13",
     "rxfire": "^6.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
