@@ -39,7 +39,10 @@
       "enabled": true,
       "port": 2004
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "pubsub": {
+      "port": 9322
+    }
   },
   "storage": {
     "rules": "storage.rules"

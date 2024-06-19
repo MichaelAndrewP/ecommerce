@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "kill-ports": "npx kill-port 200 1998 20002 2003 2004 4200",
+    "kill-ports": "npx kill-port 200 1998 20002 2003 2004 4200 9322",
     "start-emulators": "firebase emulators:start --import=./my-data --export-on-exit"
   },
   "private": true,
